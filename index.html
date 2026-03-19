@@ -64,6 +64,9 @@
             cursor: pointer;
             line-height: 1;
         }
+        #left.panel.white {
+            border-right: 1px solid #c0c0c0;
+        }
         .panel {
             font-weight: bold;
             padding: 150px 30px 30px;
@@ -96,6 +99,10 @@
             border-color: white;
         }
         @media (max-width: 639px) {
+            #left.panel.white {
+                border-right: 0;
+                border-bottom: 1px solid #c0c0c0;
+            }
             .menu {
                 padding-top: 10px;
             }
@@ -140,7 +147,7 @@
             <button id="change-court"><img src="transfer.png" alt="Transfer"></button>
         </div>
         <div class="scoreboard">
-            <div id="left" class="panel">
+            <div id="left" class="panel white">
                 <select class="team">
                     <option value="Ampong / John" data-color="white">Ampong / John</option>
                     <option value="Christian / Red" data-color="white">Christian / Red</option>
@@ -154,7 +161,7 @@
                 <div class="score left">0</div>
                 <button>-1</button>
             </div>
-            <div id="right" class="panel">
+            <div id="right" class="panel white">
                 <select class="team">
                     <option value="Ampong / John" data-color="white">Ampong / John</option>
                     <option value="Christian / Red" data-color="white">Christian / Red</option>
