@@ -15,6 +15,10 @@
         div {
             box-sizing: border-box;
         }
+        .wrapper {
+            min-width: 100vw;
+            min-height: 100vh;
+        }
         select {
             background-color: transparent;
             border: 1px solid black;
@@ -98,7 +102,7 @@
             color: white;
             border-color: white;
         }
-        @media (max-width: 639px) {
+        @media (max-width: 479px) {
             #left.panel.white {
                 border-right: 0;
                 border-bottom: 1px solid #c0c0c0;
@@ -126,6 +130,32 @@
                 width: 48px;
                 height: 48px;
                 font-size: 21px;
+            }
+            #change-court {
+                left: initial;
+                right: 5px;
+            }
+        }
+        @media (max-width: 991px) {
+            .menu {
+                padding-top: 5px;
+            }
+            select {
+                font-size: 16px;
+                padding: 5px;
+            }
+            .panel {
+                padding-top: 50px;
+            }
+            .score {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                font-size: 150px;
+            }
+            .panel button {
+                width: 32px;
+                height: 32px;
+                font-size: 18px;
             }
             #change-court {
                 left: initial;
