@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Earl Evan Amante">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>OSS 2.0</title>
+    <style>
+        html, body {
+            font-family: "Arial Black", sans-serif;
+            margin: 0;
+        }
+        div {
+            box-sizing: border-box;
+        }
+        select {
+            background-color: transparent;
+            border: 1px solid black;
+            padding: 10px 30px;
+            font-size: 32px;
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+        option {
+            color: #000;
+        }
+        .menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding-top: 30px;
+        }
+        #group {
+            background-color: white;
+        }
+        .scoreboard {
+            display: flex;
+        }
+        button {
+            width: 64px;
+            height: 64px;
+            cursor: pointer;
+            font-size: 32px;
+        }
+        button img {
+            width: 100%;
+        }
+        #change-court {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .score {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            font-family: Monospace,serif;
+            font-size: 300px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .panel {
+            font-weight: bold;
+            padding: 150px 30px 30px;
+            height: 100vh;
+            text-align: center;
+            width: 50%;
+        }
+        .panel.green {
+            background-color: #006400;
+            color: white;
+        }
+        .panel.green select {
+            color: white;
+            border-color: white;
+        }
+        .panel.black {
+            background-color: black;
+            color: white;
+        }
+        .panel.black select {
+            color: white;
+            border-color: white;
+        }
+        .panel.brown {
+            background-color: #bf5b04;
+            color: white;
+        }
+        .panel.brown select {
+            color: white;
+            border-color: white;
+        }
+        @media (max-width: 639px) {
+            .menu {
+                padding-top: 10px;
+            }
+            select {
+                font-size: 18px;
+            }
+            .scoreboard {
+                flex-direction: column;
+            }
+            .panel {
+                padding-top: 80px;
+                height: 50vh;
+                width: 100%;
+            }
+            .score {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                font-size: 200px;
+            }
+            .panel button {
+                width: 48px;
+                height: 48px;
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="menu">
+            <select id="group">
+                <option value="Group A">Group A</option>
+                <option value="Group B">Group B</option>
+                <option value="Group C">Group C</option>
+            </select>
+            <br>
+            <br>
+            <button id="change-court"><img src="transfer.png" alt="Transfer"></button>
+        </div>
+        <div class="scoreboard">
+            <div id="left" class="panel">
+                <select class="team">
+                    <option value="Ampong / John" data-color="white">Ampong / John</option>
+                    <option value="Christian / Red" data-color="white">Christian / Red</option>
+                    <option value="Brian / Arran" data-color="green">Brian / Arran</option>
+                    <option value="Lance / Eloi" data-color="green">Lance / Eloi</option>
+                    <option value="Klent / Kaka" data-color="black">Klent / Kaka</option>
+                    <option value="Rhum / Andrew" data-color="black">Rhum / Andrew</option>
+                    <option value="Kirk / Van" data-color="brown">Kirk / Van</option>
+                    <option value="Maribel / Michi" data-color="brown">Maribel / Michi</option>
+                </select>
+                <div class="score left">0</div>
+                <button>-1</button>
+            </div>
+            <div id="right" class="panel">
+                <select class="team">
+                    <option value="Ampong / John" data-color="white">Ampong / John</option>
+                    <option value="Christian / Red" data-color="white">Christian / Red</option>
+                    <option value="Brian / Arran" data-color="green">Brian / Arran</option>
+                    <option value="Lance / Eloi" data-color="green">Lance / Eloi</option>
+                    <option value="Klent / Kaka" data-color="black">Klent / Kaka</option>
+                    <option value="Rhum / Andrew" data-color="black">Rhum / Andrew</option>
+                    <option value="Kirk / Van" data-color="brown">Kirk / Van</option>
+                    <option value="Maribel / Michi" data-color="brown">Maribel / Michi</option>
+                </select>
+                <div class="score right">0</div>
+                <button>-1</button>
+            </div>
+        </div>
+    </div>
+<script src="jq.min.js"></script>
+<script>
+    let data = {
+        "Group A": [
+            "Ampong / John|white",
+            "Christian / Red|white",
+            "Brian / Arran|green",
+            "Lance / Eloi|green",
+            "Klent / Kaka|black",
+            "Rhum / Andrew|black",
+            "Kirk / Van|brown",
+            "Maribel / Michi|brown",
+        ],
+        "Group B": [
+            "Miguel / MJ|white",
+            "Kyra / Lovely|white",
+            "Rich / Mark|green",
+            "Diana / Mico|green",
+            "Mindy / Maggie|black",
+            "Jose / Jecjec|black",
+            "Ellbex / Joyce|brown",
+            "Sonson / Kyle A|brown",
+        ],
+        "Group C": [
+            "Ems / Angelo|white",
+            "Valerie / Lawrence|white",
+            "Arianne / France|green",
+            "Seann / Miko|green",
+            "Diet / JP|black",
+            "James / Jared|black",
+            "Yngwie / Janjan|brown",
+            "Chizray / Rob|brown",
+        ],
+    },
+        left = $('#left'),
+        right = $('#right'),
+        t1 = 0, t2 = 0;
+    let half = 16,
+        game = 31;
+    (function($) {
+        let changeMyColor = (obj) => {
+            let elem = $(obj),
+                parent = elem.parents('.panel'),
+                color = elem.find('option:selected').data('color');
+            parent.attr('class', 'panel');
+            parent.addClass(color);
+        };
+        $('.panel')
+            .on('click', '.score', function(e) {
+                e.preventDefault();
+                let elem = $(this),
+                    val = parseInt(elem.text());
+                if(val >= game) return;
+                if(elem.hasClass('left')) t1 = ++val;
+                else t2 = ++val;
+                elem.text(val);
+                if(val === half && (t1+t2) < 32) {
+                    setTimeout(function() {alert('Change court!');}, 100);
+                }
+                if(val === game) {
+                    setTimeout(function() {alert('Game end!');}, 100);
+                }
+            })
+            .on('click', 'button', function(e) {
+                e.preventDefault();
+                let elem = $(this),
+                    score = elem.siblings('.score'),
+                    val = parseInt(score.text());
+                if(val <= 0) return;
+                score.text(--val);
+            });
+        $('#change-court').on('click', function(e) {
+            e.preventDefault();
+            let team, score;
+            team = left.find('.team').val();
+            score = left.find('.score').text();
+            left.find('.team').val(right.find('.team').val());
+            left.find('.score').text(right.find('.score').text());
+            right.find('.team').val(team);
+            right.find('.score').text(score);
+            changeMyColor(left.find('.team'));
+            changeMyColor(right.find('.team'));
+        });
+        $('.team').on('change', function() {
+            changeMyColor(this);
+        });
+        $('#group').on('change', function() {
+            let elem = $(this),
+                group = elem.val(),
+                d = data[group],
+                o = '';
+            for(i in d) {
+                let r = d[i],
+                    a = r.split('|');
+                o += '<option value="'+ a[0] +'" data-color="'+ a[1] +'">'+ a[0] +'</option>';
+            }
+            left.find('.team').html(o);
+            right.find('.team').html(o);
+            changeMyColor(left.find('.team'));
+            changeMyColor(right.find('.team'));
+        });
+    })(jQuery);
+</script>
+</body>
+</html>
