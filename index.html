@@ -102,6 +102,16 @@
             color: white;
             border-color: white;
         }
+        #reset {
+            position: fixed;
+            top: 5px;
+            left: 5px;
+            z-index: 999;
+            background-color: #c0c0c0;
+            display: flex;
+            width: 32px;
+            height: 32px;
+        }
         @media (max-width: 479px) {
             #left.panel.white {
                 border-right: 0;
@@ -161,6 +171,7 @@
     </style>
 </head>
 <body>
+    <a href="#" id="reset"><img src="reset.png" alt="Reset"></a>
     <div class="wrapper">
         <div class="menu">
             <select id="group">
@@ -175,28 +186,28 @@
         <div class="scoreboard">
             <div id="left" class="panel white">
                 <select class="team">
-                    <option value="Ampong / John" data-color="white">Ampong / John</option>
-                    <option value="Christian / Red" data-color="white">Christian / Red</option>
-                    <option value="Brian / Arran" data-color="green">Brian / Arran</option>
-                    <option value="Lance / Eloi" data-color="green">Lance / Eloi</option>
-                    <option value="Klent / Kaka" data-color="black">Klent / Kaka</option>
-                    <option value="Rhum / Andrew" data-color="black">Rhum / Andrew</option>
-                    <option value="Kirk / Van" data-color="brown">Kirk / Van</option>
-                    <option value="Maribel / Michi" data-color="brown">Maribel / Michi</option>
+                    <option value="White 1" data-color="white">White 1</option>
+                    <option value="White 2" data-color="white">White 2</option>
+                    <option value="Green 1" data-color="green">Green 1</option>
+                    <option value="Green 2" data-color="green">Green 2</option>
+                    <option value="Black 1" data-color="black">Black 1</option>
+                    <option value="Black 2" data-color="black">Black 2</option>
+                    <option value="Brown 1" data-color="brown">Brown 1</option>
+                    <option value="Brown 2" data-color="brown">Brown 2</option>
                 </select>
                 <div class="score left">0</div>
                 <button>-1</button>
             </div>
             <div id="right" class="panel white">
                 <select class="team">
-                    <option value="Ampong / John" data-color="white">Ampong / John</option>
-                    <option value="Christian / Red" data-color="white">Christian / Red</option>
-                    <option value="Brian / Arran" data-color="green">Brian / Arran</option>
-                    <option value="Lance / Eloi" data-color="green">Lance / Eloi</option>
-                    <option value="Klent / Kaka" data-color="black">Klent / Kaka</option>
-                    <option value="Rhum / Andrew" data-color="black">Rhum / Andrew</option>
-                    <option value="Kirk / Van" data-color="brown">Kirk / Van</option>
-                    <option value="Maribel / Michi" data-color="brown">Maribel / Michi</option>
+                    <option value="White 1" data-color="white">White 1</option>
+                    <option value="White 2" data-color="white">White 2</option>
+                    <option value="Green 1" data-color="green">Green 1</option>
+                    <option value="Green 2" data-color="green">Green 2</option>
+                    <option value="Black 1" data-color="black">Black 1</option>
+                    <option value="Black 2" data-color="black">Black 2</option>
+                    <option value="Brown 1" data-color="brown">Brown 1</option>
+                    <option value="Brown 2" data-color="brown">Brown 2</option>
                 </select>
                 <div class="score right">0</div>
                 <button>-1</button>
@@ -206,40 +217,41 @@
 <script src="jq.min.js"></script>
 <script>
     let data = {
-        "Group A": [
-            "Ampong / John|white",
-            "Christian / Red|white",
-            "Brian / Arran|green",
-            "Lance / Eloi|green",
-            "Klent / Kaka|black",
-            "Rhum / Andrew|black",
-            "Kirk / Van|brown",
-            "Maribel / Michi|brown",
-        ],
-        "Group B": [
-            "Miguel / MJ|white",
-            "Kyra / Lovely|white",
-            "Rich / Mark|green",
-            "Diana / Mico|green",
-            "Mindy / Maggie|black",
-            "Jose / Jecjec|black",
-            "Ellbex / Joyce|brown",
-            "Sonson / Kyle A|brown",
-        ],
-        "Group C": [
-            "Ems / Angelo|white",
-            "Valerie / Lawrence|white",
-            "Arianne / France|green",
-            "Seann / Miko|green",
-            "Diet / JP|black",
-            "James / Jared|black",
-            "Yngwie / Janjan|brown",
-            "Chizray / Rob|brown",
-        ],
-    },
+            "Group A": [
+                "White 1|white",
+                "White 2|white",
+                "Green 1|green",
+                "Green 2|green",
+                "Black 1|black",
+                "Black 2|black",
+                "Brown 1|brown",
+                "Brown 2|brown",
+            ],
+            "Group B": [
+                "White 1|white",
+                "White 2|white",
+                "Green 1|green",
+                "Green 2|green",
+                "Black 1|black",
+                "Black 2|black",
+                "Brown 1|brown",
+                "Brown 2|brown",
+            ],
+            "Group C": [
+                "White 1|white",
+                "White 2|white",
+                "Green 1|green",
+                "Green 2|green",
+                "Black 1|black",
+                "Black 2|black",
+                "Brown 1|brown",
+                "Brown 2|brown",
+            ],
+        },
+        group = $('#group'),
         left = $('#left'),
         right = $('#right'),
-        t1 = 0, t2 = 0;
+        t1 = 0, t2 = 0, gr, tm1, tm2;
     let half = 16,
         game = 31;
     (function($) {
@@ -250,14 +262,49 @@
             parent.attr('class', 'panel');
             parent.addClass(color);
         };
+        let changeGroup = (d) => {
+            let o = '';
+            for(i in d) {
+                let r = d[i],
+                    a = r.split('|');
+                o += '<option value="'+ a[0] +'" data-color="'+ a[1] +'">'+ a[0] +'</option>';
+            }
+            left.find('.team').html(o);
+            right.find('.team').html(o);
+            changeMyColor(left.find('.team'));
+            changeMyColor(right.find('.team'));
+        };
+        let init = () => {
+            t1 = localStorage.getItem('t1') ?? 0;
+            t2 = localStorage.getItem('t2') ?? 0;
+            left.find('.score').text(t1);
+            right.find('.score').text(t2);
+
+            gr = localStorage.getItem('gr') ?? 'Group A';
+            group.val(gr);
+            let d = data[gr];
+            changeGroup(d);
+
+            tm1 = localStorage.getItem('tm1') ?? d[0].split('|')[0];
+            tm2 = localStorage.getItem('tm2') ?? d[0].split('|')[0];
+            left.find('.team').val(tm1);
+            right.find('.team').val(tm2);
+            changeMyColor(left.find('.team'));
+            changeMyColor(right.find('.team'));
+        };
         $('.panel')
             .on('click', '.score', function(e) {
                 e.preventDefault();
                 let elem = $(this),
                     val = parseInt(elem.text());
                 if(val >= game) return;
-                if(elem.hasClass('left')) t1 = ++val;
-                else t2 = ++val;
+                if(elem.hasClass('left')) {
+                    t1 = ++val;
+                    localStorage.setItem('t1', t1);
+                } else {
+                    t2 = ++val;
+                    localStorage.setItem('t2', t2);
+                }
                 elem.text(val);
                 if(val === half && (t1+t2) < 32) {
                     setTimeout(function() {alert('Change court!');}, 100);
@@ -287,23 +334,40 @@
             changeMyColor(right.find('.team'));
         });
         $('.team').on('change', function() {
+            let elem = $(this),
+                score = elem.parents('.panel').find('.score');
+            if(score.hasClass('left')) {
+                tm1 = elem.val();
+                localStorage.setItem('tm1', tm1);
+            } else {
+                tm2 = elem.val();
+                localStorage.setItem('tm2', tm2);
+            }
             changeMyColor(this);
         });
-        $('#group').on('change', function() {
+        group.on('change', function() {
             let elem = $(this),
                 group = elem.val(),
-                d = data[group],
-                o = '';
-            for(i in d) {
-                let r = d[i],
-                    a = r.split('|');
-                o += '<option value="'+ a[0] +'" data-color="'+ a[1] +'">'+ a[0] +'</option>';
-            }
-            left.find('.team').html(o);
-            right.find('.team').html(o);
-            changeMyColor(left.find('.team'));
-            changeMyColor(right.find('.team'));
+                d = data[group];
+            tm1 = d[0].split('|')[0];
+            tm2 = d[0].split('|')[0];
+            localStorage.setItem('gr', group);
+            localStorage.setItem('tm1', tm1);
+            localStorage.setItem('tm2', tm2);
+            changeGroup(d);
         });
+        $('#reset').on('click', function(e) {
+            e.preventDefault();
+            if(confirm('Are you sure you want to reset?') === true) {
+                localStorage.removeItem('t1');
+                localStorage.removeItem('t2');
+                localStorage.removeItem('gr');
+                localStorage.removeItem('tm1');
+                localStorage.removeItem('tm2');
+                init();
+            }
+        });
+        init();
     })(jQuery);
 </script>
 </body>
